@@ -10,6 +10,7 @@ class Quizzler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.grey.shade900,
         body: SafeArea(
@@ -33,18 +34,19 @@ class _QuizPageState extends State<QuizPage> {
 
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getCorrectAnswer();
-
     setState(() {
       if (quizBrain.isFinished() == true) {
         Alert(
           context: context,
           title: 'Finished!',
-          desc: 'You\'ve reached the end of the quiz.',
+          desc:
+              'You\'ve reached the end of the quiz and you got ${quizBrain.getCorrectAnswers()} out of ${quizBrain.getTotalQuestions()}',
         ).show();
         quizBrain.reset();
         scoreKeeper = [];
       } else {
         if (correctAnswer == userPickedAnswer) {
+          quizBrain.addCorrectAnswers();
           scoreKeeper.add(
             Icon(
               Icons.check,
